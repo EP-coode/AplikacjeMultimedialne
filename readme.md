@@ -16,6 +16,7 @@ etykietować w celu łatwiejszego ich wyszukiwania.
 - [ ] dodawanie do ulubioncyh artykółu
 - [ ] dodawanie notatek do ulubionego artykułu
 - [ ] dodawanie etykiet do ulubionego artykułu
+- [ ] dostęp do ulubionych artykolow w trybie offline
 
 # Używane technologie
 
