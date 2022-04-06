@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -6,7 +6,7 @@ import "./App.css";
 import HomeView from "./views/HomeView";
 import FavouritesView from "./views/FavouritesView";
 import BottomNav from "./components/BottomNav";
-import { createTheme, PaletteMode, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 import PlanetsView from "./views/PlanetsView";
 
 export default function App() {

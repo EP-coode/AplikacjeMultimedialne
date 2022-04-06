@@ -9,11 +9,11 @@ import {
   Button,
 } from "@mui/material";
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
-import React, { FC } from "react";
+import React from "react";
 import { IArticle } from "../api/interfaces/IArticle";
 
 export default function ArticleCard(props: { article: IArticle }) {
-  const { id, title, imageUrl, url } = props.article;
+  const { title, imageUrl, url } = props.article;
 
   return (
     <Card
