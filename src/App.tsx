@@ -1,52 +1,31 @@
-import React from "react";
-import logo from "./logo.svg";
+import React, { useMemo, useState } from "react";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import "./App.css";
+import HomeView from "./views/HomeView";
+import FavouritesView from "./views/FavouritesView";
+import BottomNav from "./components/BottomNav";
+import { createTheme, PaletteMode, ThemeProvider } from "@mui/material";
+import PlanetsView from "./views/PlanetsView";
 
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { Add as AddIcon } from "@mui/icons-material";
-import { Fab } from "@mui/material";
+export default function App() {
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
+    },
+  });
 
-function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <Card sx={{ maxWidth: 345 }}>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Lizard - Hello mui
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Share</Button>
-          <Button size="small">Learn More</Button>
-        </CardActions>
-      </Card>
-      <Fab color="primary" aria-label="add">
-        <AddIcon />
-      </Fab>
-    </div>
+    <BrowserRouter>
+      <ThemeProvider theme={darkTheme}>
+        <Routes>
+          <Route path="/" element={<HomeView />} />
+          <Route path="/fav" element={<FavouritesView />} />
+          <Route path="/planets" element={<PlanetsView />} />
+        </Routes>
+        <BottomNav />
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
-
-export default App;
