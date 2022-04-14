@@ -20,10 +20,12 @@ import { red, amber } from "@mui/material/colors";
 import React, { useState } from "react";
 
 import { IArticle } from "../api/interfaces/IArticle";
+import { useLocation, useNavigate } from "react-router";
 
 export default function ArticleCard(props: { article: IArticle }) {
-  const { title, imageUrl, url, featured } = props.article;
+  const { title, imageUrl, url, featured, id } = props.article;
   const [isImageLoading, setImageLoading] = useState(true);
+  const navigate = useNavigate();
 
   return (
     <Card
@@ -34,7 +36,7 @@ export default function ArticleCard(props: { article: IArticle }) {
         height: "100%",
       }}
     >
-      <CardActionArea>
+      <CardActionArea onClick={() => navigate(`/article/${id}`)}>
         <Box sx={{ position: "relative" }}>
           {featured && (
             <StarIcon
@@ -62,11 +64,15 @@ export default function ArticleCard(props: { article: IArticle }) {
             component="img"
             height="200"
             image={imageUrl}
-            sx={{ display: isImageLoading ? "none" : "bolck"}}
+            sx={{ display: isImageLoading ? "none" : "bolck" }}
           />
         </Box>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            variant="h5"
+            component="div"
+            sx={{ color: "text.primary" }}
+          >
             {title}
           </Typography>
         </CardContent>

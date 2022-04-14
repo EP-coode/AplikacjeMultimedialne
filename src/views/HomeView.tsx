@@ -32,7 +32,7 @@ export default function HomeView() {
         bgcolor: "background.paper",
         minHeight: "100vh",
         padding: "8px",
-        mb: "50px",
+        pb: "50px",
       }}
     >
       {isLoading ? (

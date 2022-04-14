@@ -8,6 +8,7 @@ import FavouritesView from "./views/FavouritesView";
 import BottomNav from "./components/BottomNav";
 import { createTheme, ThemeProvider } from "@mui/material";
 import PlanetsView from "./views/PlanetsView";
+import ArticleDetailsView from "./views/ArticleDetailsView";
 
 export default function App() {
   const darkTheme = createTheme({
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/" element={<HomeView />} />
           <Route path="/fav" element={<FavouritesView />} />
           <Route path="/planets" element={<PlanetsView />} />
+          <Route path="/article/:id" element={<ArticleDetailsView />} />
         </Routes>
         <BottomNav />
       </ThemeProvider>
