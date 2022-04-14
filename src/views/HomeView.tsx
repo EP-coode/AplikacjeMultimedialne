@@ -35,15 +35,7 @@ export default function HomeView() {
       }}
     >
       {isLoading ? (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            position: "absolute",
-            top: "50%",
-            width: "100%",
-          }}
-        >
+        <Box position={"relative"} margin={"50vh auto"} width={"fit-content"}>
           <CircularProgress />
         </Box>
       ) : (
