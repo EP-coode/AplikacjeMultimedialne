@@ -8,6 +8,7 @@ import {
   IconButton,
   Button,
   Box,
+  Skeleton,
 } from "@mui/material";
 import {
   Favorite as FavoriteIcon,
@@ -16,12 +17,13 @@ import {
 } from "@mui/icons-material";
 import { red, amber } from "@mui/material/colors";
 
-import React from "react";
+import React, { useState } from "react";
 
 import { IArticle } from "../api/interfaces/IArticle";
 
 export default function ArticleCard(props: { article: IArticle }) {
   const { title, imageUrl, url, featured } = props.article;
+  const [isImageLoading, setImageLoading] = useState(true);
 
   return (
     <Card
@@ -45,7 +47,23 @@ export default function ArticleCard(props: { article: IArticle }) {
               }}
             />
           )}
-          <CardMedia component="img" height="200" image={imageUrl} />
+
+          {isImageLoading && (
+            <Skeleton
+              variant="rectangular"
+              width={"auto"}
+              height={200}
+              animation="wave"
+            />
+          )}
+
+          <CardMedia
+            onLoad={() => setImageLoading(false)}
+            component="img"
+            height="200"
+            image={imageUrl}
+            sx={{ display: isImageLoading ? "none" : "bolck"}}
+          />
         </Box>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
