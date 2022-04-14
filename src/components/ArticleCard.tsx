@@ -11,7 +11,6 @@ import {
   Skeleton,
 } from "@mui/material";
 import {
-  Favorite as FavoriteIcon,
   FavoriteBorder as FavoriteBorder,
   Star as StarIcon,
 } from "@mui/icons-material";
@@ -20,7 +19,7 @@ import { red, amber } from "@mui/material/colors";
 import React, { useState } from "react";
 
 import { IArticle } from "../api/interfaces/IArticle";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 export default function ArticleCard(props: { article: IArticle }) {
   const { title, imageUrl, url, featured, id } = props.article;

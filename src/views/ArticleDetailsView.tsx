@@ -1,12 +1,10 @@
 import {
   Box,
-  Chip,
   Fab,
   Tooltip,
   Typography,
   CircularProgress,
 } from "@mui/material";
-import { maxHeight } from "@mui/system";
 import { Edit as EditIcon } from "@mui/icons-material";
 import { grey } from "@mui/material/colors";
 
@@ -21,7 +19,6 @@ export default function ArticleDetailsView() {
   const { id } = useParams();
   const [article, setArticle] = useState<IArticle>();
   const [isLoading, setIsLoading] = useState(false);
-  const [isImageLoading, setImageLoading] = useState(true);
 
   async function loadArticle() {
     setIsLoading(true);
