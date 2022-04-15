@@ -6,23 +6,33 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { IArticle } from "../api/interfaces/IArticle";
 import { AritclesService } from "../api/ArticlesService";
 import ArticleGrid from "../components/ArticleGrid";
+import SearchInput from "../components/SearchInput";
 
 const ARTICLES_PER_FETCH = 10;
 
 export default function HomeView() {
   const [articles, setArticles] = useState<IArticle[]>([]);
+  const [articleTitleFilter, setArticleTitleFilter] = useState("");
 
   async function loadMoreArticles() {
     const new_articles = await AritclesService.getArticles(
       ARTICLES_PER_FETCH,
-      articles.length
+      articles.length,
+      articleTitleFilter
     );
     setArticles(articles.concat(new_articles));
   }
 
+  function handleSearchForArticlesClick(titleSearchText: string) {
+    if (titleSearchText.length > 3) {
+      setArticles([]);
+      setArticleTitleFilter(titleSearchText);
+    }
+  }
+
   useEffect(() => {
     loadMoreArticles();
-  }, [setArticles]);
+  }, [setArticles, articleTitleFilter]);
 
   return (
     <Box
@@ -33,6 +43,7 @@ export default function HomeView() {
         pb: "50px",
       }}
     >
+      <SearchInput onSearchClick={handleSearchForArticlesClick} />
       <InfiniteScroll
         dataLength={articles.length}
         next={loadMoreArticles}
