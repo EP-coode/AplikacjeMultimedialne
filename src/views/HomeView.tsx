@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from "react";
 
-import { Grid, Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import { IArticle } from "../api/interfaces/IArticle";
-import ArticleCard from "../components/ArticleCard";
 import { AritclesService } from "../api/ArticlesService";
+import ArticleGrid from "../components/ArticleGrid";
+
+const ARTICLES_PER_FETCH = 10;
 
 export default function HomeView() {
   const [articles, setArticles] = useState<IArticle[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
 
-  async function loadArticles() {
-    setIsLoading(true);
-    setArticles(await AritclesService.getArticles(10, 0));
-    setIsLoading(false);
+  async function loadMoreArticles() {
+    const new_articles = await AritclesService.getArticles(
+      ARTICLES_PER_FETCH,
+      articles.length
+    );
+    setArticles(articles.concat(new_articles));
   }
 
   useEffect(() => {
-    loadArticles();
-  }, [setArticles, setIsLoading]);
-
-  const articlesView = articles.map((article) => (
-    <Grid item md={6} lg={4} key={article.id} sx={{ width: "100%" }}>
-      <ArticleCard article={article} />
-    </Grid>
-  ));
+    loadMoreArticles();
+  }, [setArticles]);
 
   return (
     <Box
@@ -35,15 +33,18 @@ export default function HomeView() {
         pb: "50px",
       }}
     >
-      {isLoading ? (
-        <Box position={"relative"} margin={"50vh auto"} width={"fit-content"}>
-          <CircularProgress />
-        </Box>
-      ) : (
-        <Grid container spacing={2}>
-          {articlesView}
-        </Grid>
-      )}
+      <InfiniteScroll
+        dataLength={articles.length}
+        next={loadMoreArticles}
+        hasMore={true}
+        loader={
+          <Box position={"relative"} margin={"20vh auto"} width={"fit-content"}>
+            <CircularProgress />
+          </Box>
+        }
+      >
+        <ArticleGrid articles={articles} />
+      </InfiniteScroll>
     </Box>
   );
 }
