@@ -10,8 +10,8 @@ etykietować w celu łatwiejszego ich wyszukiwania.
 # Podstawowe funkcjonalności
 
 - [ ] przeglądanie artykołów
-  - [ ] lista artykółów
-  - [ ] szczegóły artykółów
+  - [x] lista artykółów
+  - [x] szczegóły artykółów
   - [ ] filtrowanie artykółów
 - [ ] dodawanie do ulubioncyh artykółu
 - [ ] dodawanie notatek do ulubionego artykułu
@@ -26,3 +26,4 @@ etykietować w celu łatwiejszego ich wyszukiwania.
 - [GitHub](https://github.com/) - system kontroli wersji
 - [Azure Static Web Apps](https://azure.microsoft.com/en-us/services/app-service/static/#overview) - umożliwi bezpośredni deployment aplikacji z repozytorium github
 - [PWA](https://web.dev/progressive-web-apps) - ta technologia umożliwi nam na instalacjię aplikacji na smartfonach
+- [Dexie.js](https://dexie.org/) - wrepper umoiwiajcy łatwiejszą pracę z wbudowaną w przeglądarkę bazą indexedDB

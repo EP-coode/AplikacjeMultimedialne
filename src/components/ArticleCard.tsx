@@ -11,20 +11,54 @@ import {
   Skeleton,
 } from "@mui/material";
 import {
-  FavoriteBorder as FavoriteBorder,
+  FavoriteBorder,
+  Favorite,
   Star as StarIcon,
 } from "@mui/icons-material";
 import { red, amber } from "@mui/material/colors";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { IArticle } from "../api/interfaces/IArticle";
 import { useNavigate } from "react-router";
+import FavouriteArticlesService from "../storeServices/FavouriteArticlesService";
 
 export default function ArticleCard(props: { article: IArticle }) {
   const { title, imageUrl, url, featured, id } = props.article;
   const [isImageLoading, setImageLoading] = useState(true);
   const navigate = useNavigate();
+
+  // temporary - this logic shloud be handled elswere
+  // might be very unefficient
+  const [loadingFromIndexedDBDone, setIsLoadingDone] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+
+  function handleLikeClick() {
+    if (!loadingFromIndexedDBDone) {
+      return;
+    }
+    if (!isLiked) {
+      FavouriteArticlesService.addArticle(props.article);
+      setIsLiked(true);
+    } else {
+      FavouriteArticlesService.deleteArticle(props.article.id);
+      setIsLiked(false);
+    }
+  }
+
+  async function checkIfItIsLiked() {
+    console.log("YEE");
+
+    const isLiked = await FavouriteArticlesService.containsArticle(id);
+    setIsLiked(isLiked);
+    setIsLoadingDone(true);
+  }
+
+  useEffect(() => {
+    checkIfItIsLiked();
+  }, []);
+
+  // temporary - this logic shloud be handled elswere
 
   return (
     <Card
@@ -77,8 +111,12 @@ export default function ArticleCard(props: { article: IArticle }) {
         </CardContent>
       </CardActionArea>
       <CardActions sx={{ justifyContent: "space-between", marginTop: "auto" }}>
-        <IconButton aria-label="add to favorites">
-          <FavoriteBorder sx={{ color: red[500] }} />
+        <IconButton aria-label="add to favorites" onClick={handleLikeClick}>
+          {isLiked ? (
+            <Favorite sx={{ color: red[500] }} />
+          ) : (
+            <FavoriteBorder sx={{ color: red[500] }} />
+          )}
         </IconButton>
         <Button href={url} target={"_blank"}>
           Orginal Article
