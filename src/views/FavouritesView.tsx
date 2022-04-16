@@ -17,7 +17,7 @@ export default function FavouritesView() {
       ARTICLES_PER_REQUEST
     );
     const articles_count = await FavouriteArticlesService.getArticleCount();
-    if (articles_count <= articles.length) {
+    if (articles_count <= articles.length + new_articles.length) {
       setHasMoreData(false);
     }
     setArticles(articles.concat(new_articles));
