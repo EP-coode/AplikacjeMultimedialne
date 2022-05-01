@@ -29,8 +29,6 @@ export default function ArticleCard(props: { article: IRawArticle }) {
   const [isImageLoading, setImageLoading] = useState(true);
   const navigate = useNavigate();
 
-  // temporary - this logic shloud be handled elswere
-  // might be very unefficient
   const [loadingFromIndexedDBDone, setIsLoadingDone] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 

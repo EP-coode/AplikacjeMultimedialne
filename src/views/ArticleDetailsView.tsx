@@ -1,10 +1,4 @@
-import {
-  Box,
-  Fab,
-  Tooltip,
-  Typography,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Fab, Tooltip, Typography, CircularProgress } from "@mui/material";
 import { Edit as EditIcon } from "@mui/icons-material";
 import { grey } from "@mui/material/colors";
 
@@ -13,21 +7,52 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 import { AritclesService } from "../api/ArticlesService";
+import FavouriteArticlesService from "../db/FavouriteArticlesService";
+import ArticleNotes from "../components/ArticleNotes";
 import { IRawArticle } from "../api/interfaces/IRawArticle";
+import { IArticle } from "../db/Interfaces/IArticle";
 
 export default function ArticleDetailsView() {
   const { id } = useParams();
   const [article, setArticle] = useState<IRawArticle>();
   const [isLoading, setIsLoading] = useState(false);
+  const [isArticleNotesEditorOpened, setArticleNotesEditorOpened] =
+    useState(false);
+  const [loadingFromIndexedDBDone, setIsLoadingDone] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   async function loadArticle() {
     setIsLoading(true);
-    if (id !== undefined) setArticle(await AritclesService.getArticleById(id));
+    if (id !== undefined) {
+      if (id == undefined) return;
+
+      let article: IRawArticle | undefined =
+        await FavouriteArticlesService.getArticle(parseInt(id));
+      if (article == undefined) {
+        article = await AritclesService.getArticleById(id);
+      }
+
+      setArticle(article);
+    }
     setIsLoading(false);
   }
+  async function checkIfItIsLiked() {
+    if (id == undefined) return;
+
+    const isLiked = await FavouriteArticlesService.containsArticle(
+      parseInt(id)
+    );
+    setIsLiked(isLiked);
+    setIsLoadingDone(true);
+  }
+
   useEffect(() => {
     loadArticle();
   }, [id, setArticle, setIsLoading]);
+
+  useEffect(() => {
+    checkIfItIsLiked();
+  }, [checkIfItIsLiked]);
 
   return (
     <Box
@@ -39,6 +64,14 @@ export default function ArticleDetailsView() {
         pb: "50px",
       }}
     >
+      {article && (
+        <ArticleNotes
+          article={article as IArticle}
+          isOpen={isArticleNotesEditorOpened}
+          onCloseCLick={() => setArticleNotesEditorOpened(false)}
+          onSaveArticle={(a) => console.log("SAVING")}
+        />
+      )}
       {isLoading ? (
         <Box position={"relative"} margin={"50vh auto"} width={"fit-content"}>
           <CircularProgress />
@@ -89,9 +122,15 @@ export default function ArticleDetailsView() {
               {article?.summary}
             </Typography>
             <Fab
+              onClick={() => setArticleNotesEditorOpened(true)}
               color="primary"
               aria-label="edit"
-              sx={{ position: "fixed", bottom: "80px", right: "16px" }}
+              sx={{
+                position: "fixed",
+                bottom: "80px",
+                right: "16px",
+                display: isLiked ? "inline-flex" : "none",
+              }}
             >
               <EditIcon />
             </Fab>
