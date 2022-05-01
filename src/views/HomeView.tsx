@@ -7,6 +7,7 @@ import { IRawArticle } from "../api/interfaces/IRawArticle";
 import { AritclesService } from "../api/ArticlesService";
 import ArticleGrid from "../components/ArticleGrid";
 import SearchInput from "../components/SearchInput";
+import FavouriteArticlesService from "../storeServices/FavouriteArticlesService";
 
 const ARTICLES_PER_FETCH = 10;
 
