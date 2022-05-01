@@ -1,5 +1,5 @@
 import Dexie, { Table } from "dexie";
-import { IArticle } from "../api/interfaces/IArticle";
+import { IArticle } from "./Interfaces/IArticle";
 
 export class ArticlesDatabase extends Dexie {
   // 'friends' is added by dexie when declaring the stores()

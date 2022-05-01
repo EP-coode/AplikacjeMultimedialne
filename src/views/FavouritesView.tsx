@@ -1,14 +1,14 @@
 import { Box, CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { IArticle } from "../api/interfaces/IArticle";
+import { IRawArticle } from "../api/interfaces/IRawArticle";
 import ArticleGrid from "../components/ArticleGrid";
-import FavouriteArticlesService from "../storeServices/FavouriteArticlesService";
+import FavouriteArticlesService from "../db/FavouriteArticlesService";
 
 const ARTICLES_PER_REQUEST = 20;
 
 export default function FavouritesView() {
-  const [articles, setArticles] = useState<IArticle[]>([]);
+  const [articles, setArticles] = useState<IRawArticle[]>([]);
   const [hasMoreData, setHasMoreData] = useState(true);
 
   async function loadMoreArticles() {

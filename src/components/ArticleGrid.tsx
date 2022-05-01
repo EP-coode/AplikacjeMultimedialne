@@ -2,18 +2,16 @@ import { Grid } from "@mui/material";
 
 import React from "react";
 
-import { IArticle } from "../api/interfaces/IArticle";
+import { IRawArticle } from "../api/interfaces/IRawArticle";
 import ArticleCard from "./ArticleCard";
 
-export default function ArticleGrid(props: {
-  articles: IArticle[];
-}) {
+export default function ArticleGrid(props: { articles: IRawArticle[] }) {
   const { articles } = props;
 
   const articlesView = articles.map((article) => {
     return (
       <Grid item md={6} lg={4} key={article.id} sx={{ width: "100%" }}>
-        <ArticleCard article={article}/>
+        <ArticleCard article={article} />
       </Grid>
     );
   });

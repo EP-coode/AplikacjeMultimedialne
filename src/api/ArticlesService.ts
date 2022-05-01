@@ -1,4 +1,4 @@
-import { IArticle } from "./interfaces/IArticle";
+import { IRawArticle } from "./interfaces/IRawArticle";
 
 export class AritclesService {
   static baseUrl = "https://api.spaceflightnewsapi.net/v3";
@@ -7,7 +7,7 @@ export class AritclesService {
     count = 3,
     skip = 0,
     title_filter = ""
-  ): Promise<IArticle[]> {
+  ): Promise<IRawArticle[]> {
     const result = await fetch(
       `${AritclesService.baseUrl}/articles?_limit=${count}&_start=${skip}&title_contains=${title_filter}`
     );
@@ -15,7 +15,7 @@ export class AritclesService {
     return data;
   }
 
-  static async getArticleById(id: string): Promise<IArticle> {
+  static async getArticleById(id: string): Promise<IRawArticle> {
     const result = await fetch(`${AritclesService.baseUrl}/articles/${id}`);
     const data = await result.json();
     return data;

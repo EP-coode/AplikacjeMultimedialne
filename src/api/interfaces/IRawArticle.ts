@@ -1,4 +1,4 @@
-export interface IArticle {
+export interface IRawArticle {
   id: number;
   title: string;
   url: string;

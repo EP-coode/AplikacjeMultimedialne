@@ -13,11 +13,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 import { AritclesService } from "../api/ArticlesService";
-import { IArticle } from "../api/interfaces/IArticle";
+import { IRawArticle } from "../api/interfaces/IRawArticle";
 
 export default function ArticleDetailsView() {
   const { id } = useParams();
-  const [article, setArticle] = useState<IArticle>();
+  const [article, setArticle] = useState<IRawArticle>();
   const [isLoading, setIsLoading] = useState(false);
 
   async function loadArticle() {

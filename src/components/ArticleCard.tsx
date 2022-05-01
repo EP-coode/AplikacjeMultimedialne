@@ -19,11 +19,12 @@ import { red, amber } from "@mui/material/colors";
 
 import React, { useEffect, useState } from "react";
 
-import { IArticle } from "../api/interfaces/IArticle";
+import { IRawArticle } from "../api/interfaces/IRawArticle";
+import {IArticle} from "../db/Interfaces/IArticle";
 import { useNavigate } from "react-router";
-import FavouriteArticlesService from "../storeServices/FavouriteArticlesService";
+import FavouriteArticlesService from "../db/FavouriteArticlesService";
 
-export default function ArticleCard(props: { article: IArticle }) {
+export default function ArticleCard(props: { article: IRawArticle }) {
   const { title, imageUrl, url, featured, id } = props.article;
   const [isImageLoading, setImageLoading] = useState(true);
   const navigate = useNavigate();
@@ -38,7 +39,8 @@ export default function ArticleCard(props: { article: IArticle }) {
       return;
     }
     if (!isLiked) {
-      FavouriteArticlesService.addArticle(props.article);
+      const article: IArticle = {...props.article, tags: [], notes: ""}
+      FavouriteArticlesService.addArticle(article);
       setIsLiked(true);
     } else {
       FavouriteArticlesService.deleteArticle(props.article.id);

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { IArticle } from "../api/interfaces/IArticle";
+import { IRawArticle } from "../api/interfaces/IRawArticle";
 import { AritclesService } from "../api/ArticlesService";
 import ArticleGrid from "../components/ArticleGrid";
 import SearchInput from "../components/SearchInput";
@@ -11,7 +11,7 @@ import SearchInput from "../components/SearchInput";
 const ARTICLES_PER_FETCH = 10;
 
 export default function HomeView() {
-  const [articles, setArticles] = useState<IArticle[]>([]);
+  const [articles, setArticles] = useState<IRawArticle[]>([]);
   const [articleTitleFilter, setArticleTitleFilter] = useState("");
 
   async function loadMoreArticles() {

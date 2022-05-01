@@ -1,5 +1,5 @@
-import { IArticle } from "../api/interfaces/IArticle";
-import { db } from "../db/db";
+import { IArticle } from "./Interfaces/IArticle";
+import { db } from "./db";
 import { IndexableType } from "dexie";
 
 class FavouriteArticlesService {
