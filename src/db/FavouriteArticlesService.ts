@@ -1,14 +1,64 @@
 import { IArticle } from "./Interfaces/IArticle";
 import { db } from "./db";
 import { IndexableType } from "dexie";
+import { IRawArticle } from "../api/interfaces/IRawArticle";
+import { IDataSource } from "./Interfaces/IDataSource";
 
 class FavouriteArticlesService {
-  static async getArticles(skip: number, ammount: number): Promise<IArticle[]> {
-    return await db.articles.offset(skip).limit(ammount).toArray();
+  static async getArticles(
+    skip: number,
+    ammount: number,
+    titleSearch = "",
+    newsSite = ""
+  ): Promise<IArticle[]> {
+    let resultCollection = await db.articles.toCollection();
+
+    if (titleSearch.length > 0)
+      resultCollection = resultCollection.and((item) =>
+        item.title.toLowerCase().includes(titleSearch.toLowerCase())
+      );
+
+    if (newsSite.length > 0)
+      resultCollection = resultCollection.and(
+        (item) => item.newsSite == newsSite
+      );
+
+    return resultCollection
+      .offset(skip)
+      .limit(ammount)
+      .reverse()
+      .sortBy("likeTimestamp");
   }
+
   static async getArticle(id: number): Promise<IArticle | undefined> {
     const result = await db.articles.get(id);
     return result;
+  }
+
+  static async getArticleSources(): Promise<IDataSource[]> {
+    const uniqueDataSourceNames = await db.articles
+      .orderBy("newsSite")
+      .uniqueKeys();
+
+    const dataSources: IDataSource[] = await Promise.all(
+      uniqueDataSourceNames.map(async (dataSrcName) => {
+        return {
+          name: dataSrcName.toLocaleString(),
+          articlesAmmout:
+            await FavouriteArticlesService.getArticlesCountFromSource(
+              dataSrcName.toLocaleString()
+            ),
+        };
+      })
+    );
+
+    return dataSources;
+  }
+
+  private static async getArticlesCountFromSource(
+    sourceName: string
+  ): Promise<number> {
+    return await db.articles.where("newsSite").equals(sourceName).count();
   }
 
   static async getArticleCount(): Promise<number> {
@@ -23,8 +73,14 @@ class FavouriteArticlesService {
     const result = await db.articles.get(id);
     return !!result;
   }
-  static async addArticle(article: IArticle): Promise<IndexableType> {
-    return db.articles.add(article);
+  static async addArticle(article: IRawArticle): Promise<IndexableType> {
+    const newArticle: IArticle = {
+      ...article,
+      notes: "",
+      tags: [],
+      likeTimestamp: new Date().getTime(),
+    };
+    return db.articles.add(newArticle);
   }
   static async deleteArticle(id: number): Promise<void> {
     return db.articles.delete(id);

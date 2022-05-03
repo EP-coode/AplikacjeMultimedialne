@@ -37,8 +37,7 @@ export default function ArticleCard(props: { article: IRawArticle }) {
       return;
     }
     if (!isLiked) {
-      const article: IArticle = {...props.article, tags: [], notes: ""}
-      FavouriteArticlesService.addArticle(article);
+      FavouriteArticlesService.addArticle(props.article);
       setIsLiked(true);
     } else {
       FavouriteArticlesService.deleteArticle(props.article.id);
