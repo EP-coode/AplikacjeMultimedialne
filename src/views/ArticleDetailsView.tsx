@@ -46,6 +46,10 @@ export default function ArticleDetailsView() {
     setIsLoadingDone(true);
   }
 
+  async function saveUpdatedArticle(article: IArticle) {
+    await FavouriteArticlesService.updateArticle(article);
+  }
+
   useEffect(() => {
     loadArticle();
   }, [id, setArticle, setIsLoading]);
@@ -69,7 +73,7 @@ export default function ArticleDetailsView() {
           article={article as IArticle}
           isOpen={isArticleNotesEditorOpened}
           onCloseCLick={() => setArticleNotesEditorOpened(false)}
-          onSaveArticle={(a) => console.log("SAVING")}
+          onSaveArticle={saveUpdatedArticle}
         />
       )}
       {isLoading ? (

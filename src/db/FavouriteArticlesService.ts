@@ -15,6 +15,10 @@ class FavouriteArticlesService {
     return db.articles.count();
   }
 
+  static async updateArticle(article: IArticle): Promise<number> {
+    return db.articles.update(article.id, article);
+  }
+
   static async containsArticle(id: number): Promise<boolean> {
     const result = await db.articles.get(id);
     return !!result;

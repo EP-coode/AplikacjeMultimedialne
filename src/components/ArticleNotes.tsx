@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Close as CloseIcon } from "@mui/icons-material";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import { IArticle } from "../db/Interfaces/IArticle";
 
 import React from "react";
@@ -28,8 +28,10 @@ const ArticleNotes: FC<ArticleNotesProps> = ({
   onCloseCLick,
   onSaveArticle,
 }) => {
+  const [notes, setNotes] = useState(article.notes);
   const handleArticleSave = () => {
-    console.log("SAVING");
+    console.log(notes);
+    onSaveArticle({ ...article, notes });
   };
 
   return (
@@ -47,20 +49,31 @@ const ArticleNotes: FC<ArticleNotesProps> = ({
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
             Your notes
           </Typography>
-          <Button autoFocus color="inherit" onClick={onCloseCLick}>
+          <Button autoFocus color="inherit" onClick={handleArticleSave}>
             save
           </Button>
         </Toolbar>
       </AppBar>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "start",
+          height: "100%",
+          alignItems: "center",
+          p: 3,
+        }}
+      >
         <TextField
           multiline
           fullWidth
-          sx={{ maxWidth: "600px", m: 3 }}
+          sx={{ maxWidth: "800px" }}
           minRows={5}
-        >
-          {article.notes}
-        </TextField>
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="Enter your note..."
+          value={notes}
+        />
       </Box>
     </Dialog>
   );
