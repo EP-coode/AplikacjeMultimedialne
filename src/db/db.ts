@@ -7,8 +7,8 @@ export class ArticlesDatabase extends Dexie {
   articles!: Table<IArticle>;
   constructor() {
     super("myDatabase");
-    this.version(1).stores({
-      articles: "++id, title", // Primary key and indexed props
+    this.version(2).stores({
+      articles: "++id, title, newsSite", // Primary key and indexed props
     });
   }
 }

@@ -9,9 +9,11 @@ class FavouriteArticlesService {
     skip: number,
     ammount: number,
     titleSearch = "",
-    newsSite = ""
+    newsSite: string[] = []
   ): Promise<IArticle[]> {
     let resultCollection = await db.articles.toCollection();
+
+    newsSite = newsSite.map((site) => site.toLowerCase());
 
     if (titleSearch.length > 0)
       resultCollection = resultCollection.and((item) =>
@@ -19,8 +21,8 @@ class FavouriteArticlesService {
       );
 
     if (newsSite.length > 0)
-      resultCollection = resultCollection.and(
-        (item) => item.newsSite == newsSite
+      resultCollection = resultCollection.and((item) =>
+        newsSite.includes(item.newsSite.toLowerCase())
       );
 
     return resultCollection
