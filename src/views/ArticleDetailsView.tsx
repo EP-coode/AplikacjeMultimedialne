@@ -18,6 +18,7 @@ export default function ArticleDetailsView() {
   const [isLoading, setIsLoading] = useState(false);
   const [isArticleNotesEditorOpened, setArticleNotesEditorOpened] =
     useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loadingFromIndexedDBDone, setIsLoadingDone] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 

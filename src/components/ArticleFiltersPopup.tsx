@@ -46,8 +46,6 @@ const ArticleFiltersPopup: FC<ArticleFiltersProps> = ({
   async function getDataSources() {
     setIsLoading(true);
     const dataSources = await FavouriteArticlesService.getArticleSources();
-    console.log("ARTICLE SRC: ", dataSources);
-
     setNewsSites(dataSources);
     setIsLoading(false);
   }

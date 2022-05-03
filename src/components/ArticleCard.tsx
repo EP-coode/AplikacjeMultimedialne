@@ -20,7 +20,6 @@ import { red, amber } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 
 import { IRawArticle } from "../api/interfaces/IRawArticle";
-import {IArticle} from "../db/Interfaces/IArticle";
 import { useNavigate } from "react-router";
 import FavouriteArticlesService from "../db/FavouriteArticlesService";
 
@@ -46,8 +45,6 @@ export default function ArticleCard(props: { article: IRawArticle }) {
   }
 
   async function checkIfItIsLiked() {
-    console.log("YEE");
-
     const isLiked = await FavouriteArticlesService.containsArticle(id);
     setIsLiked(isLiked);
     setIsLoadingDone(true);
