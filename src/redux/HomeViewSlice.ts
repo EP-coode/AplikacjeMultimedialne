@@ -3,17 +3,13 @@ import { AritclesService } from "../api/ArticlesService";
 import { IRawArticle } from "../api/interfaces/IRawArticle";
 import FavouriteArticlesService from "../db/FavouriteArticlesService";
 
-import { RootState } from "./store";
+import { RootState, AppDispatch } from "./store";
 
 const ARTICLES_PER_FETCH = 15;
 
-interface IArticleCardData extends IRawArticle {
-  isLiked: boolean;
-}
-
 interface IHomeViewSliceState {
   titleFilter: string;
-  articles: IArticleCardData[];
+  articles: IRawArticle[];
   currentPage: number;
   status: "loading" | "error" | "iddle" | "nothingToLoad";
 }
@@ -25,36 +21,26 @@ const initialState: IHomeViewSliceState = {
   status: "iddle",
 };
 
-export const fetchMoreArticles = createAsyncThunk<IArticleCardData[]>(
+// How make thunk without parameters in TS ???
+export const fetchMoreArticles = createAsyncThunk<IRawArticle[]>(
   "homeViewSlice/fetchMoreArticles",
   async (_, { getState }) => {
-    const { homeViewReducer } = getState() as RootState;
-    const { titleFilter, currentPage } = homeViewReducer;
+    const { allArticles } = getState() as RootState;
+    const { titleFilter, currentPage } = allArticles;
     const newArticles = await AritclesService.getArticles(
       ARTICLES_PER_FETCH,
       currentPage * ARTICLES_PER_FETCH,
       titleFilter
     );
-
-    return Promise.all(
-      newArticles.map(async (article) => {
-        const isLiked = await FavouriteArticlesService.containsArticle(
-          article.id
-        );
-        return {
-          ...article,
-          isLiked,
-        };
-      })
-    );
+    return newArticles;
   }
 );
 
 export const likeArticle = createAsyncThunk(
   "homeViewSlice/likeArticle",
   async (articleId: number, { getState }) => {
-    const { homeViewReducer } = getState() as RootState;
-    const { articles } = homeViewReducer;
+    const { allArticles } = getState() as RootState;
+    const { articles } = allArticles;
     const articleToLike = articles.find((article) => article.id == articleId);
 
     if (articleToLike == null) return null;
@@ -89,17 +75,6 @@ export const homeViewSlice = createSlice({
     });
     builder.addCase(fetchMoreArticles.rejected, (state) => {
       state.status = "error";
-    });
-    builder.addCase(likeArticle.fulfilled, ({ articles }, action) => {
-      const articleId = action.payload;
-
-      if (articleId == null) return;
-
-      const articleIndex = articles.findIndex(
-        (article) => article.id == articleId
-      );
-      // is it safe to mutate it here ???
-      articles[articleIndex].isLiked = true;
     });
   },
 });

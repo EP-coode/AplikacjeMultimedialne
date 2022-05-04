@@ -3,7 +3,7 @@ import homeViewReducer from "../redux/HomeViewSlice";
 
 const store = configureStore({
   reducer: {
-    homeViewReducer,
+    allArticles: homeViewReducer,
   },
 });
 

@@ -1,38 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { Box, CircularProgress } from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { IRawArticle } from "../api/interfaces/IRawArticle";
-import { AritclesService } from "../api/ArticlesService";
+import { useSelector, useDispatch } from "react-redux";
+
+import { RootState, AppDispatch } from "../redux/store";
+import { fetchMoreArticles, setTitleFilter } from "../redux/HomeViewSlice";
 import ArticleGrid from "../components/ArticleGrid";
 import SearchInput from "../components/SearchInput";
 
-const ARTICLES_PER_FETCH = 10;
-
 export default function HomeView() {
-  const [articles, setArticles] = useState<IRawArticle[]>([]);
-  const [articleTitleFilter, setArticleTitleFilter] = useState("");
+  const { articles } = useSelector((state: RootState) => state.allArticles);
+  const dispatch: AppDispatch = useDispatch();
 
-  async function loadMoreArticles() {
-    const new_articles = await AritclesService.getArticles(
-      ARTICLES_PER_FETCH,
-      articles.length,
-      articleTitleFilter
-    );
-    setArticles(articles.concat(new_articles));
+  function loadMoreArticles() {
+    dispatch(fetchMoreArticles());
   }
 
   function handleSearchForArticlesClick(titleSearchText: string) {
-    if (titleSearchText.length > 3) {
-      setArticles([]);
-      setArticleTitleFilter(titleSearchText);
-    }
+    dispatch(setTitleFilter(titleSearchText));
+    dispatch(fetchMoreArticles());
   }
 
   useEffect(() => {
     loadMoreArticles();
-  }, [setArticles, articleTitleFilter]);
+  }, [dispatch]);
 
   return (
     <Box
@@ -54,7 +47,7 @@ export default function HomeView() {
           </Box>
         }
       >
-        <ArticleGrid articles={articles}/>
+        <ArticleGrid articles={articles} />
       </InfiniteScroll>
     </Box>
   );
