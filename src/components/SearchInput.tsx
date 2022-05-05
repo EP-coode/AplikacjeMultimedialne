@@ -16,6 +16,13 @@ const SearchInput: FC<SearchInputProps> = ({
     setSearchText(e.target.value);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key == "Enter") {
+      e.preventDefault();
+      onSearchClick(searchText);
+    }
+  };
+
   return (
     <Paper
       component="form"
@@ -30,11 +37,12 @@ const SearchInput: FC<SearchInputProps> = ({
       }}
     >
       <InputBase
-        sx={{ ml: 1, flex: 1}}
+        sx={{ ml: 1, flex: 1 }}
         placeholder="search for articles"
         inputProps={{ "aria-label": "search for articles" }}
         value={searchText}
         onChange={handleTextInput}
+        onKeyDown={handleKeyDown}
       />
       <IconButton
         sx={{ p: "10px" }}

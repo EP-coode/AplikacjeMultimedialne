@@ -6,7 +6,7 @@ import {
   CardContent,
   CardActions,
   IconButton,
-  Button,
+  Tooltip,
   Box,
   Skeleton,
 } from "@mui/material";
@@ -15,16 +15,18 @@ import {
   Favorite,
   Star as StarIcon,
 } from "@mui/icons-material";
-import { red, amber } from "@mui/material/colors";
+import { red, amber, grey } from "@mui/material/colors";
 
 import React, { useEffect, useState } from "react";
 
 import { IRawArticle } from "../api/interfaces/IRawArticle";
 import { useNavigate } from "react-router";
 import FavouriteArticlesService from "../db/FavouriteArticlesService";
+import CardPill from "./Pill";
 
 export default function ArticleCard(props: { article: IRawArticle }) {
-  const { title, imageUrl, url, featured, id } = props.article;
+  const { title, imageUrl, newsSite, featured, id, publishedAt } =
+    props.article;
   const [isImageLoading, setImageLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -53,8 +55,6 @@ export default function ArticleCard(props: { article: IRawArticle }) {
   useEffect(() => {
     checkIfItIsLiked();
   }, []);
-
-  // temporary - this logic shloud be handled elswere
 
   return (
     <Card
@@ -95,8 +95,9 @@ export default function ArticleCard(props: { article: IRawArticle }) {
             image={imageUrl}
             sx={{ display: isImageLoading ? "none" : "bolck" }}
           />
+          <CardPill content={newsSite} />
         </Box>
-        <CardContent>
+        <CardContent sx={{ mt: 2 }}>
           <Typography
             variant="h5"
             component="div"
@@ -106,7 +107,9 @@ export default function ArticleCard(props: { article: IRawArticle }) {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions sx={{ justifyContent: "space-between", marginTop: "auto" }}>
+      <CardActions
+        sx={{ justifyContent: "space-between", marginTop: "auto", p: 1 }}
+      >
         <IconButton aria-label="add to favorites" onClick={handleLikeClick}>
           {isLiked ? (
             <Favorite sx={{ color: red[500] }} />
@@ -114,9 +117,16 @@ export default function ArticleCard(props: { article: IRawArticle }) {
             <FavoriteBorder sx={{ color: red[500] }} />
           )}
         </IconButton>
-        <Button href={url} target={"_blank"}>
-          Orginal Article
-        </Button>
+        <Tooltip title="Published at" arrow>
+          <Typography color="text.secondary">
+            {new Date(publishedAt).toLocaleDateString("en-US", {
+              hour: "2-digit",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </Typography>
+        </Tooltip>
       </CardActions>
     </Card>
   );

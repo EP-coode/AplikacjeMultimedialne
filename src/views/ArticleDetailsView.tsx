@@ -1,6 +1,14 @@
-import { Box, Fab, Tooltip, Typography, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Fab,
+  Typography,
+  CircularProgress,
+  Button,
+  Link,
+} from "@mui/material";
 import { Edit as EditIcon } from "@mui/icons-material";
-import { grey } from "@mui/material/colors";
+import { amber } from "@mui/material/colors";
+import { Star as StarIcon } from "@mui/icons-material";
 
 import React, { useEffect, useState } from "react";
 
@@ -11,6 +19,7 @@ import FavouriteArticlesService from "../db/FavouriteArticlesService";
 import ArticleNotes from "../components/ArticleNotes";
 import { IRawArticle } from "../api/interfaces/IRawArticle";
 import { IArticle } from "../db/Interfaces/IArticle";
+import CardPill from "../components/Pill";
 
 export default function ArticleDetailsView() {
   const { id } = useParams();
@@ -74,7 +83,10 @@ export default function ArticleDetailsView() {
           article={article as IArticle}
           isOpen={isArticleNotesEditorOpened}
           onCloseCLick={() => setArticleNotesEditorOpened(false)}
-          onSaveArticle={saveUpdatedArticle}
+          onSaveArticle={(updateArticle: IArticle) => {
+            saveUpdatedArticle(updateArticle);
+            setArticleNotesEditorOpened(false);
+          }}
         />
       )}
       {isLoading ? (
@@ -94,27 +106,30 @@ export default function ArticleDetailsView() {
               backgroundRepeat: "no-repeat",
             }}
           >
-            <Tooltip title="News Site" placement="right" arrow>
-              <Box
+            {article?.featured && (
+              <StarIcon
+                fontSize="large"
                 sx={{
-                  color: "text.primary",
                   position: "absolute",
-                  bottom: "0px",
-                  left: "2rem",
-                  backgroundColor: grey[800],
-                  p: "0.5rem",
-                  pl: "1rem",
-                  pr: "1rem",
-                  borderRadius: "1rem",
-                  transform: "translateY(50%)",
-                  userSelect: "none",
+                  color: amber[600],
+                  top: "10px",
+                  right: "10px",
                 }}
-              >
-                {article?.newsSite}
-              </Box>
-            </Tooltip>
+              />
+            )}
           </Box>
-          <Box sx={{ p: "16px" }}>
+          <Box
+            sx={{
+              p: "16px",
+              maxWidth: "800px",
+              m: "0 auto",
+              position: "relative",
+            }}
+          >
+            <CardPill
+              content={article?.newsSite ?? ""}
+              pillPisition="top-left"
+            />
             <Typography
               gutterBottom
               variant="h4"
@@ -124,8 +139,17 @@ export default function ArticleDetailsView() {
               {article?.title}
             </Typography>
             <Typography sx={{ color: "text.primary" }} paragraph>
+              <Typography variant="h6">Summary:</Typography>
               {article?.summary}
             </Typography>
+            <Button
+              variant="outlined"
+              sx={{ display: "block", m: "0 auto", mt: 3 }}
+            >
+              <Link href={article?.url ?? "#"} target="_blank" underline="none">
+                Orginal article
+              </Link>
+            </Button>
             <Fab
               onClick={() => setArticleNotesEditorOpened(true)}
               color="primary"

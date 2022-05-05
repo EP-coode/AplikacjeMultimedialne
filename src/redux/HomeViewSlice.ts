@@ -68,7 +68,7 @@ export const homeViewSlice = createSlice({
       state.status = "iddle";
       state.currentPage += 1;
       state.articles = state.articles.concat(action.payload);
-      if (action.payload.length <= ARTICLES_PER_FETCH) state.status = "nothingToLoad";
+      if (action.payload.length < ARTICLES_PER_FETCH) state.status = "nothingToLoad";
     });
     builder.addCase(fetchMoreArticles.rejected, (state) => {
       state.status = "error";
