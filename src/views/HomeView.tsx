@@ -6,15 +6,22 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector, useDispatch } from "react-redux";
 
 import { RootState, AppDispatch } from "../redux/store";
-import { fetchMoreArticles, setTitleFilter, clearArticles } from "../redux/HomeViewSlice";
+import {
+  fetchMoreArticles,
+  setTitleFilter,
+  clearArticles,
+} from "../redux/HomeViewSlice";
 import ArticleGrid from "../components/ArticleGrid";
 import SearchInput from "../components/SearchInput";
 
 export default function HomeView() {
-  const { articles, titleFilter } = useSelector((state: RootState) => state.allArticles);
+  const { articles, titleFilter, status } = useSelector(
+    (state: RootState) => state.allArticles
+  );
   const dispatch: AppDispatch = useDispatch();
 
   function loadMoreArticles() {
+    if (status == "loading") return;
     dispatch(fetchMoreArticles());
   }
 
@@ -25,7 +32,9 @@ export default function HomeView() {
 
   useEffect(() => {
     loadMoreArticles();
-    return () => { dispatch(clearArticles()) };
+    return () => {
+      dispatch(clearArticles());
+    };
   }, [dispatch, titleFilter]);
 
   return (
@@ -41,7 +50,7 @@ export default function HomeView() {
       <InfiniteScroll
         dataLength={articles.length}
         next={loadMoreArticles}
-        hasMore={true}
+        hasMore={status != "nothingToLoad"}
         loader={
           <Box position={"relative"} margin={"20vh auto"} width={"fit-content"}>
             <CircularProgress />

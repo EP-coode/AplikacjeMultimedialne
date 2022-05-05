@@ -21,7 +21,8 @@ export default function FavouritesView() {
   const dispatch: AppDispatch = useDispatch();
   const [isFiltersPopupVisable, setIsFiltersPopupVisavle] = useState(false);
 
-  async function loadMoreArticles() {
+  function loadMoreArticles() {
+    if (status == "loading") return;
     dispatch(fetchMoreLocalArticles());
   }
 

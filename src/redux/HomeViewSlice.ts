@@ -28,9 +28,12 @@ const initialState: IHomeViewSliceState = {
 // How make thunk without parameters in TS ???
 export const fetchMoreArticles = createAsyncThunk<IRawArticle[]>(
   "homeViewSlice/fetchMoreArticles",
-  async (_, { getState }) => {
+  async (_, { getState, rejectWithValue }) => {
     const { allArticles } = getState() as RootState;
-    const { titleFilter, currentPage } = allArticles;
+    const { titleFilter, currentPage, status } = allArticles;
+
+    if (status == "loading") rejectWithValue("Articles already loading");
+
     const newArticles = await AritclesService.getArticles(
       ARTICLES_PER_FETCH,
       currentPage * ARTICLES_PER_FETCH,
@@ -65,6 +68,7 @@ export const homeViewSlice = createSlice({
       state.status = "iddle";
       state.currentPage += 1;
       state.articles = state.articles.concat(action.payload);
+      if (action.payload.length <= ARTICLES_PER_FETCH) state.status = "nothingToLoad";
     });
     builder.addCase(fetchMoreArticles.rejected, (state) => {
       state.status = "error";

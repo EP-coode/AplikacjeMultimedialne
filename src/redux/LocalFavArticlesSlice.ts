@@ -31,9 +31,12 @@ const initialState: ILocalFavArticles = {
 // How make thunk without parameters in TS ???
 export const fetchMoreLocalArticles = createAsyncThunk<IArticle[]>(
   "localFavArticles/fetchMoreLocalArticles",
-  async (_, { getState }) => {
+  async (_, { getState, rejectWithValue }) => {
     const { localFavArticles } = getState() as RootState;
-    const { filters, currentPage } = localFavArticles;
+    const { filters, currentPage, status } = localFavArticles;
+
+    if (status == "loading") rejectWithValue("Articles already loading");
+
     const newArticles = await FavouriteArticlesService.getArticles(
       ARTICLES_PER_FETCH,
       currentPage * ARTICLES_PER_FETCH,
@@ -67,7 +70,7 @@ export const LocalFavArticlesSlice = createSlice({
       state.status = "iddle";
       state.currentPage += 1;
       state.articles = state.articles.concat(action.payload);
-      if (action.payload.length <= 0) state.status = "nothingToLoad";
+      if (action.payload.length <= ARTICLES_PER_FETCH) state.status = "nothingToLoad";
     });
     builder.addCase(fetchMoreLocalArticles.rejected, (state) => {
       state.status = "error";
