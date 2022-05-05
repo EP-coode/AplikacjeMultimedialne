@@ -15,7 +15,7 @@ import {
   Favorite,
   Star as StarIcon,
 } from "@mui/icons-material";
-import { red, amber, grey } from "@mui/material/colors";
+import { red, amber } from "@mui/material/colors";
 
 import React, { useEffect, useState } from "react";
 

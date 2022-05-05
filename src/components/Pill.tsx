@@ -1,4 +1,4 @@
-import { Box, SxProps, Theme, Tooltip } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import React from "react";
 

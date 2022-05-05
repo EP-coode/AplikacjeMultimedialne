@@ -1,9 +1,4 @@
-import {
-  AnyAction,
-  createAsyncThunk,
-  createSlice,
-  PayloadAction,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AritclesService } from "../api/ArticlesService";
 import { IRawArticle } from "../api/interfaces/IRawArticle";
 
@@ -55,7 +50,7 @@ export const homeViewSlice = createSlice({
       state.currentPage = 0;
       state.status = "iddle";
     },
-    clearArticles: (state, _: AnyAction) => {
+    clearArticles: (state) => {
       state.articles = [];
       state.currentPage = 0;
     },
@@ -68,7 +63,8 @@ export const homeViewSlice = createSlice({
       state.status = "iddle";
       state.currentPage += 1;
       state.articles = state.articles.concat(action.payload);
-      if (action.payload.length < ARTICLES_PER_FETCH) state.status = "nothingToLoad";
+      if (action.payload.length < ARTICLES_PER_FETCH)
+        state.status = "nothingToLoad";
     });
     builder.addCase(fetchMoreArticles.rejected, (state) => {
       state.status = "error";
