@@ -6,12 +6,12 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector, useDispatch } from "react-redux";
 
 import { RootState, AppDispatch } from "../redux/store";
-import { fetchMoreArticles, setTitleFilter } from "../redux/HomeViewSlice";
+import { fetchMoreArticles, setTitleFilter, clearArticles } from "../redux/HomeViewSlice";
 import ArticleGrid from "../components/ArticleGrid";
 import SearchInput from "../components/SearchInput";
 
 export default function HomeView() {
-  const { articles } = useSelector((state: RootState) => state.allArticles);
+  const { articles, titleFilter } = useSelector((state: RootState) => state.allArticles);
   const dispatch: AppDispatch = useDispatch();
 
   function loadMoreArticles() {
@@ -25,7 +25,8 @@ export default function HomeView() {
 
   useEffect(() => {
     loadMoreArticles();
-  }, [dispatch]);
+    return () => { dispatch(clearArticles()) };
+  }, [dispatch, titleFilter]);
 
   return (
     <Box

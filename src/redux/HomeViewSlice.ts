@@ -1,9 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AnyAction, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AritclesService } from "../api/ArticlesService";
 import { IRawArticle } from "../api/interfaces/IRawArticle";
-import FavouriteArticlesService from "../db/FavouriteArticlesService";
 
-import { RootState, AppDispatch } from "./store";
+import { RootState } from "./store";
 
 const ARTICLES_PER_FETCH = 15;
 
@@ -36,21 +35,6 @@ export const fetchMoreArticles = createAsyncThunk<IRawArticle[]>(
   }
 );
 
-export const likeArticle = createAsyncThunk(
-  "homeViewSlice/likeArticle",
-  async (articleId: number, { getState }) => {
-    const { allArticles } = getState() as RootState;
-    const { articles } = allArticles;
-    const articleToLike = articles.find((article) => article.id == articleId);
-
-    if (articleToLike == null) return null;
-
-    await FavouriteArticlesService.addArticle(articleToLike);
-
-    return articleId;
-  }
-);
-
 export const homeViewSlice = createSlice({
   name: "homeViewSlice",
   initialState,
@@ -63,6 +47,10 @@ export const homeViewSlice = createSlice({
       state.currentPage = 0;
       state.status = "iddle";
     },
+    clearArticles: (state, _: AnyAction) => {
+      state.articles = []
+      state.currentPage = 0
+    }
   },
   extraReducers(builder) {
     builder.addCase(fetchMoreArticles.pending, (state) => {
@@ -80,6 +68,6 @@ export const homeViewSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setTitleFilter } = homeViewSlice.actions;
+export const { setTitleFilter, clearArticles } = homeViewSlice.actions;
 
 export default homeViewSlice.reducer;
