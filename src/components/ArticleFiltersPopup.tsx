@@ -16,14 +16,11 @@ import {
 import React, { FC, useEffect, useState } from "react";
 import FavouriteArticlesService from "../db/FavouriteArticlesService";
 import { IDataSource } from "../db/Interfaces/IDataSource";
+import { ILocalArticlesFilter } from "../redux/LocalFavArticlesSlice";
 
-export interface IArticleFilters {
-  title: string;
-  newsSite: string[];
-}
 interface ArticleFiltersProps {
-  filters?: IArticleFilters;
-  onFiltersChange: (filters: IArticleFilters) => void;
+  filters?: ILocalArticlesFilter;
+  onFiltersChange: (filters: ILocalArticlesFilter) => void;
   isOpen: boolean;
   onClose: () => void;
 }

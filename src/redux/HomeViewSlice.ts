@@ -1,4 +1,9 @@
-import { AnyAction, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  AnyAction,
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import { AritclesService } from "../api/ArticlesService";
 import { IRawArticle } from "../api/interfaces/IRawArticle";
 
@@ -48,9 +53,9 @@ export const homeViewSlice = createSlice({
       state.status = "iddle";
     },
     clearArticles: (state, _: AnyAction) => {
-      state.articles = []
-      state.currentPage = 0
-    }
+      state.articles = [];
+      state.currentPage = 0;
+    },
   },
   extraReducers(builder) {
     builder.addCase(fetchMoreArticles.pending, (state) => {

@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import homeViewReducer from "../redux/HomeViewSlice";
+import LocalFavArticlesSlice from "../redux/LocalFavArticlesSlice";
 
 const store = configureStore({
   reducer: {
     allArticles: homeViewReducer,
+    localFavArticles: LocalFavArticlesSlice,
   },
 });
 

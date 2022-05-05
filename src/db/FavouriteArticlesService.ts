@@ -6,8 +6,8 @@ import { IDataSource } from "./Interfaces/IDataSource";
 
 class FavouriteArticlesService {
   static async getArticles(
-    skip: number,
     ammount: number,
+    skip: number,
     titleSearch = "",
     newsSite: string[] = []
   ): Promise<IArticle[]> {
