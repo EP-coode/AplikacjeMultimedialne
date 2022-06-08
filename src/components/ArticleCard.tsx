@@ -66,6 +66,15 @@ export default function ArticleCard(props: { article: IRawArticle }) {
       }}
     >
       <CardActionArea onClick={() => navigate(`/article/${id}`)}>
+        {/* ONLY FOR REACT TESTING LIB */}
+        {loadingFromIndexedDBDone && (
+          <span
+            data-testid="loadingFromLocalDb"
+            style={{ visibility: "hidden" }}
+          >
+            Loading Done
+          </span>
+        )}
         <Box sx={{ position: "relative" }}>
           {featured && (
             <StarIcon
@@ -112,7 +121,7 @@ export default function ArticleCard(props: { article: IRawArticle }) {
       >
         <IconButton aria-label="add to favorites" onClick={handleLikeClick}>
           {isLiked ? (
-            <Favorite sx={{ color: red[500] }} />
+            <Favorite sx={{ color: red[500] }}/>
           ) : (
             <FavoriteBorder sx={{ color: red[500] }} />
           )}
