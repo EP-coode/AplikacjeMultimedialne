@@ -9,21 +9,21 @@ etykietować w celu łatwiejszego ich wyszukiwania.
 
 # Podstawowe funkcjonalności
 
-- [ ] przeglądanie artykołów
+- [x] przeglądanie artykołów
   - [x] lista artykółów
   - [x] szczegóły artykółów
-  - [ ] filtrowanie artykółów
-- [ ] dodawanie do ulubioncyh artykółu
-- [ ] dodawanie notatek do ulubionego artykułu
+  - [x] filtrowanie artykółów
+- [x] dodawanie artykółu do ulubioncyh
+- [x] dodawanie notatek do ulubionego artykułu
 - [ ] dodawanie etykiet do ulubionego artykułu
-- [ ] dostęp do ulubionych artykolow w trybie offline
+- [x] dostęp do ulubionych artykolow w trybie offline
 
 # Używane technologie
 
 - [React.js](https://pl.reactjs.org/) - Biblioteka frontendowa
 - [MaterialUI](https://mui.com/) - Design system implemetujący material design. Zaprojektowany od podstaw dla reacta
-- [Redux](https://redux.js.org/) - biblioteka do zarządaniem stanem aplikacji. Bedzie użyta opcjonalnie, jeśli stan aplikacji okaże się dostatecznie złożony.
-- [GitHub](https://github.com/) - system kontroli wersji
+- [Redux](https://redux.js.org/) - Biblioteka do zarządaniem stanem aplikacji. Bibiloteka użyta tylko w celu praktyki. Nie ma ona tutaj większego sensu. 
+- [GitHub](https://github.com/) - Zdalne repozytorium wersji
 - [Azure Static Web Apps](https://azure.microsoft.com/en-us/services/app-service/static/#overview) - umożliwi bezpośredni deployment aplikacji z repozytorium github
-- [PWA](https://web.dev/progressive-web-apps) - ta technologia umożliwi nam na instalacjię aplikacji na smartfonach
+- [PWA](https://web.dev/progressive-web-apps) - ta technologia umożliwi nam na instalacjię aplikacji na smartfonach. Tylko, żeby spełnić wymagania labolatorium i nie bawić się Javą.
 - [Dexie.js](https://dexie.org/) - wrepper umoiwiajcy łatwiejszą pracę z wbudowaną w przeglądarkę bazą indexedDB
